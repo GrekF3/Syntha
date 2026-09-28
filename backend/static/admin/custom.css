@@ -1,0 +1,41 @@
+/* Simple sleek dark-ish theme aligned with app styling */
+
+:root {
+  --admin-bg: #0b0b0f;
+  --admin-card: #14141a;
+  --admin-border: #252533;
+  --admin-text: #e7e7ea;
+  --admin-muted: #9aa0a6;
+  --admin-accent: #1f1f2b;
+  --admin-primary: #7c3aed; /* violet */
+}
+
+body, html { background: var(--admin-bg); color: var(--admin-text); }
+
+#header { background: linear-gradient(90deg, rgba(124,58,237,.9), rgba(99,102,241,.85)); box-shadow: none; }
+#branding, #site-name a { color: #fff !important; }
+.site-subtitle { color: #fff; opacity: .85; font-size: 12px; margin-left: 8px; }
+
+.module, .module caption, .app-auth.module caption, .dashboard .module, .content { background: var(--admin-card) !important; }
+.module, .content, .inline-group { border-color: var(--admin-border) !important; }
+
+table, .change-list .results { background: transparent !important; }
+th, td { border-color: var(--admin-border) !important; }
+th { background: var(--admin-accent) !important; color: var(--admin-text) !important; }
+
+a:link, a:visited { color: #a78bfa; }
+a:hover { color: #c4b5fd; }
+
+.button, input[type=submit], input[type=button], .submit-row input { background: var(--admin-primary) !important; border: none !important; color: #fff !important; }
+.button:hover, input[type=submit]:hover, input[type=button]:hover, .submit-row input:hover { filter: brightness(1.05); }
+
+fieldset, .inline-related { background: var(--admin-card) !important; }
+
+/* login page */
+.login #container { background: var(--admin-card); border-color: var(--admin-border); }
+.login .submit-row input { width: 100%; }
+
+/* filters/search */
+.change-list .filtered .results, .change-list .filtered { background: var(--admin-card) !important; }
+.selector { background: var(--admin-card); }
+

@@ -1,0 +1,13 @@
+.git
+.gitignore
+**/__pycache__
+**/.pytest_cache
+**/.next
+**/node_modules
+**/.DS_Store
+**/dist
+**/build
+**/.venv
+backend/db.sqlite3-journal
+backend/.mypy_cache
+frontend/ai_girls/.turbo

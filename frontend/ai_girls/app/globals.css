@@ -1,0 +1,210 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* Theme tokens mapped for Tailwind v4 */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-manrope);
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+/* Base (light) palette — kept minimal, we default to dark via <html class="dark"> */
+:root {
+  --radius: 0.625rem;
+  --background: oklch(0.98 0 0);
+  --foreground: oklch(0.2 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.2 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.2 0 0);
+  --primary: oklch(0.38 0.19 310); /* violet */
+  --primary-foreground: oklch(0.98 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.2 0 0);
+  --muted: oklch(0.96 0 0);
+  --muted-foreground: oklch(0.55 0 0);
+  --accent: oklch(0.96 0.02 310);
+  --accent-foreground: oklch(0.25 0 0);
+  --destructive: oklch(0.65 0.22 25);
+  --border: oklch(0.9 0 0);
+  --input: oklch(0.9 0 0);
+  --ring: oklch(0.7 0.08 310);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.2 0 0);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: oklch(0.96 0 0);
+  --sidebar-accent-foreground: oklch(0.25 0 0);
+  --sidebar-border: oklch(0.92 0 0);
+  --sidebar-ring: var(--ring);
+
+  /* Soft glows */
+  --glow-1: color-mix(in oklch, var(--primary) 35%, transparent);
+  --glow-2: color-mix(in oklch, oklch(0.75 0.1 330) 20%, transparent);
+}
+
+/* Dark palette — default via <html class="dark"> */
+.dark {
+  --background: oklch(0.18 0.02 280);
+  --foreground: oklch(0.98 0.01 285);
+  --card: oklch(0.22 0.02 280);
+  --card-foreground: var(--foreground);
+  --popover: oklch(0.22 0.02 280);
+  --popover-foreground: var(--foreground);
+  --primary: oklch(0.7 0.18 310); /* violet glow */
+  --primary-foreground: oklch(0.12 0 0);
+  --secondary: oklch(0.24 0 0);
+  --secondary-foreground: var(--foreground);
+  --muted: oklch(0.26 0 0);
+  --muted-foreground: oklch(0.75 0 0);
+  --accent: oklch(0.28 0.02 310);
+  --accent-foreground: var(--foreground);
+  --destructive: oklch(0.62 0.2 25);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 16%);
+  --ring: oklch(0.72 0.12 310);
+
+  --sidebar: oklch(0.18 0.02 280);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: oklch(0.24 0 0);
+  --sidebar-accent-foreground: var(--foreground);
+  --sidebar-border: oklch(1 0 0 / 12%);
+  --sidebar-ring: var(--ring);
+
+  --glow-1: color-mix(in oklch, var(--primary) 18%, transparent);
+  --glow-2: color-mix(in oklch, oklch(0.88 0.22 340) 10%, transparent);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    /* Subtle gradient + glow background for dark minimal look */
+    background-image:
+      radial-gradient(1200px 600px at 90% -10%, var(--glow-2), transparent),
+      radial-gradient(800px 400px at 10% 0%, var(--glow-1), transparent),
+      linear-gradient(180deg, color-mix(in oklch, var(--background) 98%, black 2%), var(--background));
+    background-attachment: fixed;
+  }
+
+  /* Card and panel subtle elevation */
+  .card, .panel, .popover {
+    box-shadow:
+      0 1px 0 0 color-mix(in oklch, black 30%, transparent),
+      0 8px 24px -12px color-mix(in oklch, var(--primary) 12%, transparent);
+  }
+}
+
+/* Brand styles */
+.logo-font {
+  /* next/font exposes the font via CSS variable */
+  font-family: var(--font-rowdies), ui-rounded, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol", sans-serif;
+}
+
+.gradient-text {
+  /* Use Tailwind utilities via apply to ensure theme consistency */
+  @apply text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-fuchsia-500 to-cyan-400;
+}
+
+/* Utility to hide inner scrollbars (used in chat textarea) */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Typing indicator dots */
+.typing-dots { display: inline-flex; gap: 4px; }
+.typing-dots .dot {
+  width: 6px; height: 6px; border-radius: 9999px;
+  background: color-mix(in oklch, var(--foreground) 80%, transparent);
+  animation: typing-bounce 1s infinite ease-in-out;
+}
+.typing-dots .dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dots .dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes typing-bounce {
+  0%, 80%, 100% { transform: translateY(0); opacity: .6; }
+  40% { transform: translateY(-3px); opacity: 1; }
+}
+
+/* Native controls: ensure dark pickers/readability */
+.dark select,
+.dark input,
+.dark textarea {
+  color-scheme: dark;
+}
+
+/* Subtle animated glow for auth pages */
+.auth-glow {
+  position: absolute;
+  width: 20rem;
+  height: 20rem;
+  border-radius: 9999px;
+  background:
+    radial-gradient(closest-side, var(--glow-1), transparent 70%),
+    radial-gradient(closest-side, var(--glow-2), transparent 70%);
+  filter: blur(48px);
+  opacity: .45;
+  animation: glowPulse 7s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+  0%, 100% { opacity: .32; transform: translateY(0) scale(1); }
+  50% { opacity: .58; transform: translateY(-6px) scale(1.02); }
+}
+
+/* Global custom scrollbar (WebKit) */
+*::-webkit-scrollbar {
+  width: 10px; height: 10px;
+}
+*::-webkit-scrollbar-track {
+  background: color-mix(in oklch, var(--background) 92%, black 8%);
+}
+*::-webkit-scrollbar-thumb {
+  background: color-mix(in oklch, var(--muted) 70%, black 30%);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  border-radius: 9999px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in oklch, var(--muted) 55%, black 45%);
+  background-clip: padding-box;
+}
+
+/* Global custom scrollbar (Firefox) */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in oklch, var(--muted) 70%, black 30%) color-mix(in oklch, var(--background) 92%, black 8%);
+}

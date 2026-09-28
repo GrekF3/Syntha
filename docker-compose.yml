@@ -1,0 +1,88 @@
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: aigirls-backend
+    working_dir: /app
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+      - backend_static:/app/static
+      - backend_media:/app/media
+      - ./backend/db.sqlite3:/app/db.sqlite3
+    environment:
+      - DJANGO_DEBUG=1
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/1
+      # Optional text2img provider configuration
+      - TXT2IMG_PROVIDER=
+      - STABILITY_API_KEY=
+      - SD_WEBUI_URL=
+      - SD_MODEL_REAL=
+      - SD_MODEL_ANIME=
+    # If you need different CORS origins, adjust settings.py
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/ai_girls/Dockerfile
+    container_name: aigirls-frontend
+    working_dir: /app
+    command: npm run dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend/ai_girls:/app
+      - /app/node_modules
+      - /app/.next
+    environment:
+      # Client calls same-origin; Next.js rewrites proxy to backend
+      - NEXT_PUBLIC_API_BASE=
+      - API_ORIGIN=http://backend:8000
+      - WATCHPACK_POLLING=true
+      - HOST=0.0.0.0
+    depends_on:
+      - backend
+      - redis
+
+  worker:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: aigirls-worker
+    working_dir: /app
+    command: celery -A ai_girls worker -l info --concurrency=2
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/1
+      # Optional text2img provider configuration
+      - TXT2IMG_PROVIDER=
+      - STABILITY_API_KEY=
+      - SD_WEBUI_URL=
+      - SD_MODEL_REAL=
+      - SD_MODEL_ANIME=
+    volumes:
+      - ./backend:/app
+      - ./backend/db.sqlite3:/app/db.sqlite3
+    depends_on:
+      - backend
+      - redis
+
+  redis:
+    image: redis:7-alpine
+    container_name: aigirls-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+
+volumes:
+  backend_static:
+  backend_media:
+  redis_data:
