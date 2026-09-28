@@ -1,4 +1,4 @@
-# AI Character Platform
+# Syntha
 
 A full-stack platform for creating character profiles, conversations, and generated media.
 
